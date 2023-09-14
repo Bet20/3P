@@ -1,0 +1,5 @@
+x 3 def
+y 10 def
+x y * print 
+y print
+"NO" 10 10 = "YES" ? print
