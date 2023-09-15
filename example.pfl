@@ -2,4 +2,18 @@ x 3 def
 y 10 def
 x y * print 
 y print
-"NO" 10 10 = "YES" ? print
+( "NO" T "YES" ? ) print # YES
+( "NO" F "YES" ? ) print # NO
+{0 1 1 1 2 3 4} list:each 1 + print . # [1 2 2 2 3 4 5]
+# ^ transforms to this more or less
+# {(0 1 +) 1 1 1 2 3 4}
+
+# functions syntax -> (name) (arguments) function {body} end
+print_list {'l} function
+  x 0 def
+  :loop l x get 1 +
+  print
+  x (1 x +) def
+  :loop ( x l len < ) jmp
+end
+
