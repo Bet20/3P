@@ -122,7 +122,7 @@ def tokenize(source: str) -> List:
                     elif aux == "type": tokens.append(Token(T.TYPE, aux, i))
                     elif aux == "def": tokens.append(Token(T.DEF, aux, i))
                     
-                    else: tokens.append(Token(T.STRING, aux, i))
+                    else: tokens.append(Token(T.IDENT, aux, i))
                 else: 
                     tokens.append(Token(T.ILEGAL, "\0", i))
         i += 1

@@ -8,6 +8,9 @@ y print
 # ^ transforms to this more or less
 # {(0 1 +) 1 1 1 2 3 4}
 
+x 0 def
+(:a (x (x 1 +) def) (!a (x 10 =) jmp))
+
 # functions syntax -> (name) (arguments) function {body} end
 print_list {'l} function
   x 0 def
@@ -16,4 +19,3 @@ print_list {'l} function
   x (1 x +) def
   :loop ( x l len < ) jmp
 end
-
