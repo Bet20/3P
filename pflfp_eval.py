@@ -31,7 +31,6 @@ stack_pop = lambda: stack.pop()
 is_type = lambda x, y: x.type == y
 are_type = lambda x, y: all(t == y for t in x) # checks if every element in list is of type y
 
-
 def evaluate(toks: list[pt.Token]):
     for tok in toks:
         match tok.type:
@@ -68,6 +67,38 @@ def evaluate(toks: list[pt.Token]):
                 stack_push(tok)
             case pt.T.BOOL:
                 stack_push(tok)
+            case pt.T.GREATER:
+                rh = stack_pop()
+                lh = stack_pop()
+                if is_type(rh, pt.T.INTEGER) or is_type(lh, pt.T.INTEGER): 
+                    b = int(rh.literal) > int(lh.literal)
+                    t: pt.Token
+                    if b:
+                        t = pt.Token(pt.T.BOOL, 'T', lh.pos)
+                    else:
+                        t = pt.Token(pt.T.BOOL, 'F', lh.pos)
+                    stack_push(t)
+                    pass
+                
+                print(rh.literal + " - " + lh.literal + " : are not of the same type") 
+                exit(-1)
+
+            case pt.T.LESSER:
+                rh = stack_pop()
+                lh = stack_pop()
+                if is_type(rh, pt.T.INTEGER) or is_type(lh, pt.T.INTEGER): 
+                    b = int(rh.literal) < int(lh.literal)
+                    t: pt.Token
+                    if b:
+                        t = pt.Token(pt.T.BOOL, 'T', lh.pos)
+                    else:
+                        t = pt.Token(pt.T.BOOL, 'F', lh.pos)
+                    stack_push(t)
+                    pass
+                
+                print(rh.literal + " - " + lh.literal + " : are not of the same type") 
+                exit(-1)
+
             case pt.T.LABEL:
                 stack_push(tok)
             case pt.T.PRINT:

@@ -18,6 +18,8 @@ class T(Enum):
     EQ = 26
     DEF = 27
     DOUBLEQUOTES = 28
+    GREATER = 29
+    LESSER = 30
 
     QUESTION = 60
     LCURLY = 61
@@ -48,6 +50,8 @@ look_up  = {
 
     T.PLUS: "operator",
     T.MINUS: "operator",
+    T.GREATER: "operator",
+    T.LESSER: "operator",
     T.STAR: "operator",
     T.SLASH: "operator",
     T.DOUBLEQUOTES: "\"",
@@ -104,6 +108,8 @@ def tokenize(source: str) -> List:
             case '*': tokens.append(Token(T.STAR, '*', i))
             case '/': tokens.append(Token(T.SLASH, '/', i))
             case '=': tokens.append(Token(T.EQ, '=', i))
+            case '>': tokens.append(Token(T.GREATER, '>', i))
+            case '<': tokens.append(Token(T.LESSER, '<', i))
             case 'T' | 'F': tokens.append(Token(T.BOOL, source[i], i)) 
             case '"': 
                 string, i = read_string(source, i)
