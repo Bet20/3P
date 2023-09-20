@@ -28,6 +28,8 @@ class T(Enum):
     TYPE = 98
     PRINT = 99
     FUNCTION = 100
+    DUP = 101
+    DROP = 102
     ILEGAL = 998 
     EOF = 999
 
@@ -47,7 +49,8 @@ look_up  = {
     T.IDENT: "identifier",
     T.LABEL: "label",
     T.FUNCTION: "function",
-
+    T.DUP: "dup",
+    T.DROP: "drop",
     T.PLUS: "operator",
     T.MINUS: "operator",
     T.GREATER: "operator",
@@ -126,8 +129,9 @@ def tokenize(source: str) -> List:
                     aux, i = read_ident(source, i)
                     if aux == "print": tokens.append(Token(T.PRINT, aux, i))
                     elif aux == "type": tokens.append(Token(T.TYPE, aux, i))
+                    elif aux == "dup": tokens.append(Token(T.DUP, aux, i))
+                    elif aux == "drop": tokens.append(Token(T.DROP, aux, i))
                     elif aux == "def": tokens.append(Token(T.DEF, aux, i))
-                    
                     else: tokens.append(Token(T.IDENT, aux, i))
                 else: 
                     tokens.append(Token(T.ILEGAL, "\0", i))

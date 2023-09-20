@@ -3,19 +3,21 @@ import pflfp_token as pt
 # ----- ENV -----
 env: dict = {}
 def register_def(id, value):
-    env[id] = value
+    env[id.literal] = value
+    print(env)
 
 def get_def(id):
-    env.get(id)
+    env.get(id.literal)
+    print(env)
 
 def override_def(id, value):
     if id in env:
-        existing_value = env[id]
+        existing_value = env[id]["value"]
         if existing_value is not None and existing_value.type != value.type:
             print(f"error '{id}' is not of type '{value.type}'")
             # You might want to raise an exception here instead of exiting
             # raise ValueError(f"error '{id}' is not of type '{value.type}'")
-        env[id] = value
+        env[id]["value"] = value
         for key in env:
             print(key, env[key])
     else:
@@ -26,6 +28,11 @@ def override_def(id, value):
 stack: list = []
 stack_push = lambda tok: stack.append(tok)
 stack_pop = lambda: stack.pop()
+
+def stack_peek(index, x = 1):
+    if len(stack) <= index + x: 
+        return stack[index+x]
+    return None
 
 # ---- EVALUATION ----
 is_type = lambda x, y: x.type == y
@@ -60,11 +67,11 @@ def evaluate(toks: list[pt.Token]):
             case pt.T.STRING:
                 stack_push(tok)
             case pt.T.IDENT:
+                print(tok)
                 if get_def(tok) != None:
                     print("EXISTS")
                     stack_push(env[tok])
-                    pass
-                stack_push(tok)
+                else: stack_push(tok)
             case pt.T.BOOL:
                 stack_push(tok)
             case pt.T.GREATER:
@@ -103,7 +110,14 @@ def evaluate(toks: list[pt.Token]):
                 stack_push(tok)
             case pt.T.PRINT:
                 lh = stack_pop() 
-                print(lh.literal)
+                if lh.type == pt.T.IDENT:
+                    item = env.get(lh.literal)
+                    if item != None:
+                        print(item.literal)
+                    else:
+                        print("Nil")
+                else: 
+                    print(lh.literal)
             case pt.T.DEF:
                 rh = stack_pop()
                 lh = stack_pop()
@@ -113,13 +127,12 @@ def evaluate(toks: list[pt.Token]):
 
                 if get_def(lh) == None:
                     register_def(lh, rh)
-                    pass
-
-                override_def(lh, rh)
+                else: 
+                    override_def(lh, rh)
 
             case pt.T.TYPE:
                 lh = stack_pop()
-                print(pt.look_up.get(lh.type))
+                print(lh.literal)
             case _:
                 pass
     pass
