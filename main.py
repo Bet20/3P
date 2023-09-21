@@ -5,6 +5,9 @@ import pflfp_eval
 def read_line():
     inp = input('>> ')
     tokens = pflfp_token.tokenize(inp)
+    print(tokens)
+    for x in tokens:
+        print(x)
     pflfp_eval.evaluate(tokens)
 
 def main():

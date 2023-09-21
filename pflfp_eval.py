@@ -7,8 +7,7 @@ def register_def(id, value):
     print(env)
 
 def get_def(id):
-    env.get(id.literal)
-    print(env)
+    return env.get(id.literal)
 
 def override_def(id, value):
     if id in env:
@@ -67,11 +66,7 @@ def evaluate(toks: list[pt.Token]):
             case pt.T.STRING:
                 stack_push(tok)
             case pt.T.IDENT:
-                print(tok)
-                if get_def(tok) != None:
-                    print("EXISTS")
-                    stack_push(env[tok])
-                else: stack_push(tok)
+                stack_push(get_def(tok)) 
             case pt.T.BOOL:
                 stack_push(tok)
             case pt.T.GREATER:
@@ -118,6 +113,11 @@ def evaluate(toks: list[pt.Token]):
                         print("Nil")
                 else: 
                     print(lh.literal)
+            
+            case pt.T.IDENTASSIGN:
+                lh = stack_pop()
+                env[tok.literal] = lh
+
             case pt.T.DEF:
                 rh = stack_pop()
                 lh = stack_pop()

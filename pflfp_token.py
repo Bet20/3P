@@ -8,6 +8,7 @@ class T(Enum):
     BOOL = 3
     LABEL = 4
     IDENT = 5
+    IDENTASSIGN = 6
 
     PLUS = 20
     MINUS = 21
@@ -30,6 +31,7 @@ class T(Enum):
     FUNCTION = 100
     DUP = 101
     DROP = 102
+    COMMENT = 997
     ILEGAL = 998 
     EOF = 999
 
@@ -47,6 +49,7 @@ look_up  = {
     T.STRING: "string",
     T.INTEGER: "integer",
     T.IDENT: "identifier",
+    T.IDENTASSIGN: "assignment",
     T.LABEL: "label",
     T.FUNCTION: "function",
     T.DUP: "dup",
@@ -64,6 +67,7 @@ look_up  = {
     T.DEF: "def",
     T.PRINT: "print",
     T.TYPE: "type",
+    T.COMMENT: "comment"
         }
 
 # LEXING INLINE FUNCT ONS
@@ -110,10 +114,18 @@ def tokenize(source: str) -> List:
             case '-': tokens.append(Token(T.MINUS, '-', i))
             case '*': tokens.append(Token(T.STAR, '*', i))
             case '/': tokens.append(Token(T.SLASH, '/', i))
-            case '=': tokens.append(Token(T.EQ, '=', i))
+            case '=':
+                if source[i+1] != None and source[i+1].isalpha():
+                    i += 1 
+                    ident, i = read_ident(source, i)
+                    tokens.append(Token(T.IDENTASSIGN, ident, i))
+                else: tokens.append(Token(T.EQ, '=', i))
             case '>': tokens.append(Token(T.GREATER, '>', i))
             case '<': tokens.append(Token(T.LESSER, '<', i))
             case 'T' | 'F': tokens.append(Token(T.BOOL, source[i], i)) 
+            case '#': 
+                while source[i] != '\n': 
+                    i += 1 
             case '"': 
                 string, i = read_string(source, i)
                 tokens.append(Token(T.STRING, string, i))
