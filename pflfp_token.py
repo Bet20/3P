@@ -44,6 +44,12 @@ class Token:
     def __str__(self) -> str:
         return "(" + self.literal + " " + look_up[self.type] + ")"
 
+class Function:
+    def __init__(self, ident: str, body: Token[], params: str[]) -> None:
+        self.body = body
+        self.params = params 
+        self.env = {}
+
 look_up  = {
     T.BOOL: "bool",
     T.STRING: "string",
