@@ -44,12 +44,6 @@ class Token:
     def __str__(self) -> str:
         return "(" + self.literal + " " + look_up[self.type] + ")"
 
-class Function:
-    def __init__(self, ident: str, body: Token[], params: str[]) -> None:
-        self.body = body
-        self.params = params 
-        self.env = {}
-
 look_up  = {
     T.BOOL: "bool",
     T.STRING: "string",
@@ -90,12 +84,11 @@ def read_ident(source: str, index: int):
 
 def read_string(source: str, index: int):
     i = index
-    i += 1
     begin = i
-    while source[i] == "\"":
+    while source[i] != "\"":
         i += 1
     end = i
-    return (source[begin:1-end], i)
+    return (source[begin:end], i)
 
 def read_integer(source: str, index: int):
     i = index
@@ -133,6 +126,7 @@ def tokenize(source: str) -> List:
                 while source[i] != '\n': 
                     i += 1 
             case '"': 
+                i += 1
                 string, i = read_string(source, i)
                 tokens.append(Token(T.STRING, string, i))
             case ':':

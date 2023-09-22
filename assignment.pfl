@@ -1,5 +1,9 @@
 # This is a comment
 
+# HELLO WORLD
+( "Hello" =hello ) ( " World!" =world )
+hello world + print
+
 10 =ten
 "string" =str
 

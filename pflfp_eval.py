@@ -7,6 +7,7 @@ def register_def(id, value):
     print(env)
 
 def get_def(id):
+    print(env.get(id.literal))
     return env.get(id.literal)
 
 def override_def(id, value):
@@ -43,24 +44,28 @@ def evaluate(toks: list[pt.Token]):
             case pt.T.PLUS:
                 rh = stack_pop()
                 lh = stack_pop()
-                if not is_type(rh, pt.T.INTEGER) or not is_type(lh, pt.T.INTEGER): 
+                if is_type(rh, pt.T.INTEGER) and is_type(lh, pt.T.INTEGER):
+                    stack_push(pt.Token(pt.T.INTEGER, str(int(lh.literal) + int(rh.literal)), lh.pos))
+                elif is_type(rh, pt.T.STRING) and is_type(lh, pt.T.STRING):
+                    stack_push(pt.Token(pt.T.STRING, lh.literal + rh.literal, lh.pos))
+                else: 
                     print(rh.literal + " + " + lh.literal + " : are not of the same type") 
                     exit(-1)
-                stack_push(pt.Token(pt.T.INTEGER, str(int(rh.literal) + int(lh.literal)), lh.pos))
+                
             case pt.T.STAR:
                 rh = stack_pop()
                 lh = stack_pop()
                 if not is_type(rh, pt.T.INTEGER) or not is_type(lh, pt.T.INTEGER): 
                     print(rh.literal + " * " + lh.literal + " : are not of the same type") 
                     exit(-1)
-                stack_push(pt.Token(pt.T.INTEGER, str(int(rh.literal) * int(lh.literal)), lh.pos))
+                stack_push(pt.Token(pt.T.INTEGER, str(int(lh.literal) * int(rh.literal)), lh.pos))
             case pt.T.MINUS:
                 rh = stack_pop()
                 lh = stack_pop()
                 if not is_type(rh, pt.T.INTEGER) or not is_type(lh, pt.T.INTEGER): 
                     print(rh.literal + " - " + lh.literal + " : are not of the same type") 
                     exit(-1)
-                stack_push(pt.Token(pt.T.INTEGER, str(int(rh.literal) - int(lh.literal)), lh.pos))
+                stack_push(pt.Token(pt.T.INTEGER, str(int(lh.literal) - int(rh.literal)), lh.pos))
             case pt.T.INTEGER:
                 stack_push(tok)
             case pt.T.STRING:
@@ -81,9 +86,9 @@ def evaluate(toks: list[pt.Token]):
                         t = pt.Token(pt.T.BOOL, 'F', lh.pos)
                     stack_push(t)
                     pass
-                
-                print(rh.literal + " - " + lh.literal + " : are not of the same type") 
-                exit(-1)
+                else: 
+                    print(rh.literal + " - " + lh.literal + " : are not of the same type") 
+                    exit(-1)
 
             case pt.T.LESSER:
                 rh = stack_pop()
@@ -97,9 +102,9 @@ def evaluate(toks: list[pt.Token]):
                         t = pt.Token(pt.T.BOOL, 'F', lh.pos)
                     stack_push(t)
                     pass
-                
-                print(rh.literal + " - " + lh.literal + " : are not of the same type") 
-                exit(-1)
+                else: 
+                    print(rh.literal + " - " + lh.literal + " : are not of the same type") 
+                    exit(-1)
 
             case pt.T.LABEL:
                 stack_push(tok)
