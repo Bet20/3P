@@ -25,6 +25,7 @@ class T(Enum):
     QUESTION = 60
     LCURLY = 61
     RCURLY = 62
+    BLOCK = 63
 
     TYPE = 98
     PRINT = 99
@@ -67,7 +68,8 @@ look_up  = {
     T.DEF: "def",
     T.PRINT: "print",
     T.TYPE: "type",
-    T.COMMENT: "comment"
+    T.COMMENT: "comment",
+    T.BLOCK: "operator"
         }
 
 # LEXING INLINE FUNCT ONS
@@ -125,6 +127,9 @@ def tokenize(source: str) -> List:
             case '#': 
                 while source[i] != '\n': 
                     i += 1 
+            case '|':
+                tokens.append(Token(T.BLOCK, source[i], i))
+                i += 1
             case '"': 
                 i += 1
                 string, i = read_string(source, i)

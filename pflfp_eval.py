@@ -39,6 +39,7 @@ is_type = lambda x, y: x.type == y
 are_type = lambda x, y: all(t == y for t in x) # checks if every element in list is of type y
 
 def evaluate(toks: list[pt.Token]):
+    capturing_macro = False
     for tok in toks:
         match tok.type:
             case pt.T.PLUS:
