@@ -1,4 +1,4 @@
-# PFLPF _ Programming Pidgin
+# 3P _ Postfix Programming Pidgin
 
 Stack based language created to learn more about programming languages and as golf-like language eventually.
 
@@ -21,3 +21,11 @@ Greet example:
 - Booleans
 - Labels
 - *Some composite type eventually*
+
+### Examples
+```
+# | Not implemented yet |
+# macro to prefix text with '*'
+# prefix("hello", 3) -> "***hello"
+"hello" 3 |(dup 1 <) if { 1 - swp "*" + swp prefix }| =prefix
+```
