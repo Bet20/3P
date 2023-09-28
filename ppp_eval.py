@@ -1,6 +1,22 @@
 import pflfp_token as pt
+import ppp_parser as ps
 
 # ----- ENV -----
+
+class Object:
+    def __init__(self, node: ps.Basic) -> None:
+        self.node = node 
+        pass
+    
+    def __eval_bool__(self):
+        return self.node.value == "t"
+
+    def eval(self):
+        match self.node.type():
+            case pt.T.INT: self.value = int(self.node.value)
+            case pt.T.BOOL: self.value = self.__eval_bool__()
+
+
 env: dict = {}
 def register_def(id, value):
     env[id.literal] = value
